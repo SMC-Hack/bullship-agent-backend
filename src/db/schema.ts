@@ -19,7 +19,7 @@ export const authMessagesTable = pgTable('auth_messages', {
 export const usersTable = pgTable('users', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   walletAddress: varchar({ length: 255 }).notNull().unique(),
-  worldIdVerified: boolean().notNull().default(false),
+  verified: boolean().notNull().default(false),
   createdAt: timestamp().notNull().defaultNow(),
 });
 
