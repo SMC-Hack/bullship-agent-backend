@@ -7,4 +7,5 @@ export const cfg = {
   port: process.env.PORT || 4000,
   databaseUrl: process.env.DATABASE_URL || '',
   jwtSecret: process.env.JWT_SECRET || '',
+  walletEncryptionKey: process.env.WALLET_ENCRYPTION_KEY || '',
 };

@@ -33,7 +33,8 @@ export const agentsTable = pgTable('agents', {
   userId: integer()
     .notNull()
     .references(() => usersTable.id),
-  stockSymbol: varchar({ length: 255 }).notNull(),
+  stockSymbol: varchar({ length: 255 }),
+  stockAddress: varchar({ length: 255 }),
   imageUrl: varchar({ length: 255 }),
   selectedTokens: text().notNull(),
   strategy: text().notNull(),
