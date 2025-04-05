@@ -7,4 +7,6 @@ export interface TokenInfo {
     symbol: string;
     decimals: number;
     name: string;
+    logoURI?: string;
+    chainId?: string;
 }

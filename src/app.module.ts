@@ -7,9 +7,18 @@ import { APP_GUARD } from '@nestjs/core';
 import { TokenModule } from './token/token.module';
 import { ChainModule } from './chain/chain.module';
 import { OneInchModule } from './one-inch/one-inch.module';
+import { FileModule } from './file/file.module';
 
 @Module({
-  imports: [DbModule, AuthModule, AgentModule, TokenModule, ChainModule, OneInchModule],
+  imports: [
+    DbModule,
+    AuthModule,
+    AgentModule,
+    TokenModule,
+    ChainModule,
+    OneInchModule,
+    FileModule,
+  ],
   providers: [
     {
       provide: APP_GUARD,
