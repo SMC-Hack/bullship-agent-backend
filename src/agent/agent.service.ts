@@ -57,16 +57,21 @@ export class AgentService {
       },
     });
 
-    if (query && query[0]?.walletKey?.address) {
-      const week = await this.oneInchService.getPortfolioValueChart(
-        [query[0].walletKey?.address],
-        '8453',
-        '1week',
-      );
+    const agentsWithPortfolio = await Promise.all(
+      query.map(async (agent) => {
+        if (agent.walletKey?.address) {
+          const week = await this.oneInchService.getPortfolioValueChart(
+            [agent.walletKey?.address],
+            '8453',
+            '1week',
+          );
+          return { ...agent, week };
+        }
+        return agent;
+      }),
+    );
 
-      return { ...query, week };
-    }
-    return query;
+    return agentsWithPortfolio;
   }
 
   async getAgent(agentId: string) {
