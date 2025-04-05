@@ -4,7 +4,7 @@ import { DrizzleAsyncProvider } from 'src/db/drizzle.provider';
 import * as schema from 'src/db/schema';
 import { WalletService } from './wallet/wallet.service';
 import { eq } from 'drizzle-orm';
-import {  CreateAgentTokenDto } from './dto/create-agent-token.dto';
+import { CreateAgentTokenDto } from './dto/create-agent-token.dto';
 import { CreateAgentDto } from './dto/create-agent.dto';
 
 @Injectable()

@@ -8,4 +8,5 @@ export const cfg = {
   databaseUrl: process.env.DATABASE_URL || '',
   jwtSecret: process.env.JWT_SECRET || '',
   walletEncryptionKey: process.env.WALLET_ENCRYPTION_KEY || '',
+  oneInchApiKey: process.env.ONE_INCH_API_KEY || '',
 };
