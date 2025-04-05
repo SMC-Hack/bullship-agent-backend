@@ -5,9 +5,10 @@ import { AgentModule } from './agent/agent.module';
 import { AccessTokenAuthGuard } from './auth/at-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { OneInchModule } from './one-inch/one-inch.module';
+import { EnsModule } from './ens/ens.module';
 
 @Module({
-  imports: [DbModule, AuthModule, AgentModule, OneInchModule],
+  imports: [DbModule, AuthModule, AgentModule, OneInchModule, EnsModule],
   providers: [
     {
       provide: APP_GUARD,

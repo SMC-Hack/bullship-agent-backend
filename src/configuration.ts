@@ -9,4 +9,7 @@ export const cfg = {
   jwtSecret: process.env.JWT_SECRET || '',
   walletEncryptionKey: process.env.WALLET_ENCRYPTION_KEY || '',
   oneInchApiKey: process.env.ONE_INCH_API_KEY || '',
+  adminWalletPrivateKey: process.env.ADMIN_WALLET_PRIVATE_KEY || '',
+  baseSepoliaRpcUrl: process.env.BASE_SEPOLIA_RPC_URL || '',
+  sepoliaRpcUrl: process.env.SEPOLIA_RPC_URL || '',
 };
