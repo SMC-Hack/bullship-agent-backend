@@ -9,6 +9,7 @@ import { ChainModule } from './chain/chain.module';
 import { OneInchModule } from './one-inch/one-inch.module';
 import { FileModule } from './file/file.module';
 import { EnsModule } from './ens/ens.module';
+import { ContractModule } from './contract/contract.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { EnsModule } from './ens/ens.module';
     OneInchModule,
     FileModule,
     EnsModule,
+    ContractModule,
   ],
   providers: [
     {

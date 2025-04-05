@@ -8,6 +8,7 @@ import { CreateAgentTokenDto } from './dto/create-agent-token.dto';
 import { CreateAgentDto } from './dto/create-agent.dto';
 import { CommonQuery } from 'src/common/query/pagination-query';
 import { EnsService } from 'src/ens/ens.service';
+import { ContractService } from 'src/contract/contract.service';
 
 @Injectable()
 export class AgentService {
@@ -16,6 +17,7 @@ export class AgentService {
     private readonly db: NodePgDatabase<typeof schema>,
     private readonly walletService: WalletService,
     private readonly ensService: EnsService,
+    private readonly contractService: ContractService,
   ) {}
 
   async getAgents(commonQuery: CommonQuery) {
@@ -71,6 +73,11 @@ export class AgentService {
     });
   }
 
+  async updateENSandApproveMerchant(name: string, walletAddress: string) {
+    await this.ensService.setPrimaryName(name, walletAddress);
+    void this.contractService.agentApproveMaxToAgentMerchant(walletAddress);
+  }
+
   async createAgent(userId: string, createAgentDto: CreateAgentDto) {
     const agent = await this.db.query.agentsTable.findFirst({
       where: eq(schema.agentsTable.name, createAgentDto.name),
@@ -96,18 +103,20 @@ export class AgentService {
 
         const newWallet = this.walletService.createWallet();
 
-        void this.ensService.setPrimaryName(
-          createAgentDto.name,
-          newWallet.address,
-        );
-
         await tx.insert(schema.walletKeysTable).values({
           agentId: agent[0].id,
           address: newWallet.address,
           encryptedWalletData: newWallet.encryptedWalletData,
         });
+
         return { ...agent[0], walletAddress: newWallet.address };
       });
+
+      void this.updateENSandApproveMerchant(
+        createAgentDto.name,
+        transaction.walletAddress,
+      );
+
       return transaction;
     } catch (err) {
       console.log(err);
@@ -130,17 +139,14 @@ export class AgentService {
       throw new BadRequestException('Agent wallet not found');
     }
 
-    if (agent.stockSymbol || agent.stockAddress) {
-      throw new BadRequestException(
-        'Agent already has a stock symbol or address',
-      );
+    if (agent.stockAddress) {
+      throw new BadRequestException('Agent already has a stock address');
     }
 
     const transaction = await this.db.transaction(async (tx) => {
       const agent = await tx
         .update(schema.agentsTable)
         .set({
-          stockSymbol: createAgentDto.stockSymbol,
           stockAddress: createAgentDto.stockAddress,
         })
         .where(eq(schema.agentsTable.id, +agentId))

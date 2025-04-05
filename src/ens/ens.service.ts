@@ -9,6 +9,7 @@ import { DrizzleAsyncProvider } from 'src/db/drizzle.provider';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from 'src/db/schema';
 import { eq } from 'drizzle-orm';
+import { logTransaction } from 'src/utils/transaction.util';
 
 @Injectable()
 export class EnsService {
@@ -52,6 +53,11 @@ export class EnsService {
         label,
         ownerAddress,
       )) as ethers.ContractTransactionResponse;
+      logTransaction(
+        tx,
+        'Base Sepolia',
+        `register ENS name ${label}.bullship.eth`,
+      );
       await tx.wait();
       return tx;
     } catch (error: unknown) {
@@ -70,10 +76,11 @@ export class EnsService {
         to: ownerAddress,
         value: ethers.parseEther('0.001'),
       });
+      logTransaction(tx, 'Sepolia', 'send ETH to owner');
       await tx.wait();
       const ownerEncryptedWalletData =
         await this.db.query.walletKeysTable.findFirst({
-          where: eq(schema.walletKeysTable.address, ownerAddress),
+          where: eq(schema.walletKeysTable.address, ownerAddress.toLowerCase()),
         });
       if (!ownerEncryptedWalletData) {
         throw new Error('Owner not found');
@@ -90,6 +97,7 @@ export class EnsService {
       const tx2 = (await reverseRegistrarContract.setName(
         name,
       )) as ethers.ContractTransactionResponse;
+      logTransaction(tx2, 'Sepolia', `set primary name to ${name}`);
       await tx2.wait();
       return tx2;
     } catch (error: unknown) {
