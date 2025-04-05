@@ -17,5 +17,5 @@ export const cfg = {
   redisHost: process.env.REDIS_HOST || '',
   redisPort: process.env.REDIS_PORT || '',
   redisPassword: process.env.REDIS_PASSWORD || '',
-  enableQueue: process.env.ENABLE_QUEUE === 'true',
+  enableQueue: process.env.ENABLE_QUEUE === 'true' || false,
 };

@@ -5,6 +5,7 @@ import {
   text,
   timestamp,
   varchar,
+  decimal,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -79,8 +80,8 @@ export const balanceSnapshotsTable = pgTable('balance_snapshots', {
     .notNull()
     .references(() => agentsTable.id)
     .unique(),
-  balanceUSD: integer(),
-  pnl: integer(),
+  balanceUSD: decimal(),
+  pnl: decimal(),
   createdAt: timestamp().notNull().defaultNow(),
 });
 

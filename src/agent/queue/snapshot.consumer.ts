@@ -44,14 +44,15 @@ export class AgentSnapshotConsumer extends WorkerHost {
             .insert(schema.balanceSnapshotsTable)
             .values({
               agentId: agent.agents.id,
-              balanceUSD: currentValue.result[0].value_usd,
-              pnl: pnl.result[0].abs_profit_usd,
+              balanceUSD: currentValue.result[0].value_usd.toString(),
+              pnl: pnl.result[0].abs_profit_usd.toString(),
+              createdAt: new Date(),
             })
             .onConflictDoUpdate({
               target: schema.balanceSnapshotsTable.agentId,
               set: {
-                balanceUSD: currentValue.result[0].value_usd,
-                pnl: pnl.result[0].abs_profit_usd,
+                balanceUSD: currentValue.result[0].value_usd.toString(),
+                pnl: pnl.result[0].abs_profit_usd.toString(),
                 createdAt: new Date(),
               },
             });

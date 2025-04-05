@@ -1,0 +1,3 @@
+ALTER TABLE balance_snapshots
+ALTER COLUMN "balanceUSD" TYPE DECIMAL(20,8),
+ALTER COLUMN "pnl" TYPE DECIMAL(20,8); 

@@ -3,5 +3,5 @@ export const AGENT_SNAPSHOT_QUEUE = 'agent_snapshot_queue';
 export const AGENT_SETTLEMENT_QUEUE = 'agent_settlement_queue';
 
 export const AGENT_EXECUTE_INTERVAL = 5 * 60 * 1000; // 5 minutes
-export const AGENT_SNAPSHOT_INTERVAL = 60 * 1000; // 1 minute
+export const AGENT_SNAPSHOT_INTERVAL = 5 * 1000; // 5 seconds
 export const AGENT_SETTLEMENT_INTERVAL = 1 * 60 * 60 * 1000; // 1 hour
