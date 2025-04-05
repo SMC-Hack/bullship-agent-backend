@@ -1,0 +1,36 @@
+name: DEPLOY_PRODUCTION
+
+on:
+  push:
+    branches: [production]
+
+jobs:
+  Build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Create .env file
+        run: |
+          cat << EOF > .env
+          NODE_ENV=${{secrets.NODE_ENV}}
+          DATABASE_URL=${{secrets.DATABASE_URL}}
+          JWT_SECRET=${{secrets.JWT_SECRET}}
+          WALLET_ENCRYPTION_KEY=${{secrets.WALLET_ENCRYPTION_KEY}}
+          CHAIN_ICON_TEMPLATE_URL=${{secrets.CHAIN_ICON_TEMPLATE_URL}}
+          AVAILABLE_CHAIN_IDS=${{secrets.AVAILABLE_CHAIN_IDS}}
+          ONE_INCH_API_KEY=${{secrets.ONE_INCH_API_KEY}}
+          ADMIN_WALLET_PRIVATE_KEY=${{secrets.ADMIN_WALLET_PRIVATE_KEY}}
+          BASE_SEPOLIA_RPC_URL=${{secrets.BASE_SEPOLIA_RPC_URL}}
+          SEPOLIA_RPC_URL=${{secrets.SEPOLIA_RPC_URL}}
+          REDIS_HOST=${{secrets.REDIS_HOST}}
+          REDIS_PORT=${{secrets.REDIS_PORT}}
+          REDIS_PASSWORD=${{secrets.REDIS_PASSWORD}}
+          ENABLE_QUEUE=${{secrets.ENABLE_QUEUE}}
+          EOF
+
+      - name: Run Docker Compose
+        run: docker compose up -d --no-deps --build --remove-orphans
+
+      - name: Run Docker System Prune
+        run: docker system prune -f

@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  bullship-agent-api:
+    container_name: bullship-agent-api
+    restart: always
+    build: .
+    ports:
+      - '4000:4000'
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - WALLET_ENCRYPTION_KEY=${WALLET_ENCRYPTION_KEY}
+      - CHAIN_ICON_TEMPLATE_URL=${CHAIN_ICON_TEMPLATE_URL}
+      - AVAILABLE_CHAIN_IDS=${AVAILABLE_CHAIN_IDS}
+      - ONE_INCH_API_KEY=${ONE_INCH_API_KEY}
+      - ADMIN_WALLET_PRIVATE_KEY=${ADMIN_WALLET_PRIVATE_KEY}
+      - BASE_SEPOLIA_RPC_URL=${BASE_SEPOLIA_RPC_URL}
+      - SEPOLIA_RPC_URL=${SEPOLIA_RPC_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - ENABLE_QUEUE=${ENABLE_QUEUE}
+
+    network_mode: host
