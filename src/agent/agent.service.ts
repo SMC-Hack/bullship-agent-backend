@@ -140,7 +140,9 @@ export class AgentService {
     }
 
     if (agent.stockAddress) {
-      throw new BadRequestException('Agent already has a stock address');
+      throw new BadRequestException(
+        'Agent already has a stock address',
+      );
     }
 
     const transaction = await this.db.transaction(async (tx) => {
