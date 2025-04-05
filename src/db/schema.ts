@@ -51,6 +51,7 @@ export const agentsRelations = relations(agentsTable, ({ one, many }) => ({
   }),
   walletKey: one(walletKeysTable),
   log: many(logsTable),
+  balanceSnapshots: one(balanceSnapshotsTable),
 }));
 
 export const logsTable = pgTable('logs', {

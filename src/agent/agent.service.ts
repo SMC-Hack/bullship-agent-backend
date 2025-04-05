@@ -59,6 +59,7 @@ export class AgentService {
     return this.db.query.agentsTable.findFirst({
       where: eq(schema.agentsTable.id, +agentId),
       with: {
+        balanceSnapshots: true,
         user: {
           columns: {
             walletAddress: true,
@@ -140,9 +141,7 @@ export class AgentService {
     }
 
     if (agent.stockAddress) {
-      throw new BadRequestException(
-        'Agent already has a stock address',
-      );
+      throw new BadRequestException('Agent already has a stock address');
     }
 
     const transaction = await this.db.transaction(async (tx) => {
