@@ -8,6 +8,7 @@ import { TokenModule } from './token/token.module';
 import { ChainModule } from './chain/chain.module';
 import { OneInchModule } from './one-inch/one-inch.module';
 import { FileModule } from './file/file.module';
+import { EnsModule } from './ens/ens.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { FileModule } from './file/file.module';
     ChainModule,
     OneInchModule,
     FileModule,
+    EnsModule,
   ],
   providers: [
     {

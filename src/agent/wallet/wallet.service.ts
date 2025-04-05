@@ -47,8 +47,11 @@ export class WalletService {
     };
   }
 
-  getSigner(encryptedWalletData: string): ethers.Signer {
+  getSigner(
+    encryptedWalletData: string,
+    provider: ethers.JsonRpcProvider,
+  ): ethers.Signer {
     const privateKey = this.decrypt(encryptedWalletData);
-    return new ethers.Wallet(privateKey);
+    return new ethers.Wallet(privateKey, provider);
   }
 }

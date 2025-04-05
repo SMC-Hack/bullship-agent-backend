@@ -8,8 +8,10 @@ export const cfg = {
   databaseUrl: process.env.DATABASE_URL || '',
   jwtSecret: process.env.JWT_SECRET || '',
   walletEncryptionKey: process.env.WALLET_ENCRYPTION_KEY || '',
-
   chainIconTemplateUrl: process.env.CHAIN_ICON_TEMPLATE_URL || '',
   availableChainIds: (process.env.AVAILABLE_CHAIN_IDS || '').split(','),
   oneInchApiKey: process.env.ONE_INCH_API_KEY || '',
+  adminWalletPrivateKey: process.env.ADMIN_WALLET_PRIVATE_KEY || '',
+  baseSepoliaRpcUrl: process.env.BASE_SEPOLIA_RPC_URL || '',
+  sepoliaRpcUrl: process.env.SEPOLIA_RPC_URL || '',
 };
