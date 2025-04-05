@@ -9,6 +9,7 @@ import { CreateAgentDto } from './dto/create-agent.dto';
 import { CommonQuery } from 'src/common/query/pagination-query';
 import { EnsService } from 'src/ens/ens.service';
 import { ContractService } from 'src/contract/contract.service';
+import { OneInchService } from 'src/one-inch/one-inch.service';
 
 @Injectable()
 export class AgentService {
@@ -18,6 +19,7 @@ export class AgentService {
     private readonly walletService: WalletService,
     private readonly ensService: EnsService,
     private readonly contractService: ContractService,
+    private readonly oneInchService: OneInchService,
   ) {}
 
   async getAgents(commonQuery: CommonQuery) {
@@ -57,7 +59,7 @@ export class AgentService {
   }
 
   async getAgent(agentId: string) {
-    return this.db.query.agentsTable.findFirst({
+    const agent = await this.db.query.agentsTable.findFirst({
       where: eq(schema.agentsTable.id, +agentId),
       with: {
         balanceSnapshots: true,
@@ -73,6 +75,26 @@ export class AgentService {
         },
       },
     });
+    if (agent && agent.walletKey?.address) {
+      const week = await this.oneInchService.getPortfolioValueChart(
+        [agent.walletKey?.address],
+        '8453',
+        '1week',
+      );
+      const month = await this.oneInchService.getPortfolioValueChart(
+        [agent.walletKey?.address],
+        '8453',
+        '1month',
+      );
+      const year = await this.oneInchService.getPortfolioValueChart(
+        [agent.walletKey?.address],
+        '8453',
+        '1year',
+      );
+      return { ...agent, week, month, year };
+    } else {
+      return agent;
+    }
   }
 
   async updateENSandApproveMerchant(name: string, walletAddress: string) {
