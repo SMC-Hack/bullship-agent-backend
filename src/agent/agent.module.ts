@@ -19,7 +19,7 @@ import { OneInchModule } from 'src/one-inch/one-inch.module';
   providers: [
     AgentService,
     QueueProducer,
-    ...(cfg.nodeEnv === 'production' ? [] : [AgentSnapshotConsumer]),
+    ...(cfg.enableQueue ? [] : [AgentSnapshotConsumer]),
   ],
   controllers: [AgentController],
   imports: [
