@@ -37,7 +37,7 @@ export class AgentService {
         orderByField = schema.agentsTable.createdAt;
         break;
     }
-    return this.db.query.agentsTable.findMany({
+    const query = await this.db.query.agentsTable.findMany({
       offset: (page - 1) * limit,
       limit,
       where: search ? like(schema.agentsTable.name, `%${search}%`) : undefined,
@@ -56,6 +56,17 @@ export class AgentService {
         },
       },
     });
+
+    if (query && query[0]?.walletKey?.address) {
+      const week = await this.oneInchService.getPortfolioValueChart(
+        [query[0].walletKey?.address],
+        '8453',
+        '1week',
+      );
+
+      return { ...query, week };
+    }
+    return query;
   }
 
   async getAgent(agentId: string) {
