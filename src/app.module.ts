@@ -4,11 +4,23 @@ import { AuthModule } from './auth/auth.module';
 import { AgentModule } from './agent/agent.module';
 import { AccessTokenAuthGuard } from './auth/at-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { TokenModule } from './token/token.module';
+import { ChainModule } from './chain/chain.module';
 import { OneInchModule } from './one-inch/one-inch.module';
+import { FileModule } from './file/file.module';
 import { EnsModule } from './ens/ens.module';
 
 @Module({
-  imports: [DbModule, AuthModule, AgentModule, OneInchModule, EnsModule],
+  imports: [
+    DbModule,
+    AuthModule,
+    AgentModule,
+    TokenModule,
+    ChainModule,
+    OneInchModule,
+    FileModule,
+    EnsModule,
+  ],
   providers: [
     {
       provide: APP_GUARD,
