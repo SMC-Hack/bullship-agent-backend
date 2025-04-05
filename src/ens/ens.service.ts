@@ -1,7 +1,7 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { ethers } from 'ethers';
 import { cfg } from '../configuration';
-import { BullShipAgentRegistrar } from '../constants/BullShipAgentRegistrar';
+import { BullShipAgentL2Registrar } from '../constants/BullShipAgentL2Registrar';
 import { ReverseRegistrar } from '../constants/ReverseRegistrar';
 import { addressList } from 'src/constants/addressList';
 import { WalletService } from 'src/agent/wallet/wallet.service';
@@ -44,8 +44,8 @@ export class EnsService {
   ): Promise<ethers.ContractTransactionResponse> {
     try {
       const registrarContract = new ethers.Contract(
-        addressList.baseSepolia.bullShipAgentRegistrar,
-        BullShipAgentRegistrar.abi,
+        addressList.baseSepolia.bullShipAgentL2Registrar,
+        BullShipAgentL2Registrar.abi,
         this.adminBaseSepoliaSigner,
       );
       const tx = (await registrarContract.register(
@@ -65,7 +65,7 @@ export class EnsService {
   async setPrimaryName(name: string, ownerAddress: string) {
     try {
       await this.registerName(name, ownerAddress);
-      name = `${name.toLowerCase()}.durintst.eth`;
+      name = `${name.toLowerCase()}.bullship.eth`;
       const tx = await this.adminSepoliaSigner.sendTransaction({
         to: ownerAddress,
         value: ethers.parseEther('0.001'),
