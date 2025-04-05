@@ -22,6 +22,13 @@
       "when": 1743784063590,
       "tag": "0002_burly_reaper",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1743835094932,
+      "tag": "0003_luxuriant_electro",
+      "breakpoints": true
     }
   ]
 }

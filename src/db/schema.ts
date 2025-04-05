@@ -30,6 +30,7 @@ export const usersRelations = relations(usersTable, ({ many }) => ({
 export const agentsTable = pgTable('agents', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
+  description: text(),
   userId: integer()
     .notNull()
     .references(() => usersTable.id),

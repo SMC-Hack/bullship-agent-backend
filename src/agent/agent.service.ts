@@ -60,6 +60,9 @@ export class AgentService {
           .values({
             userId: +userId,
             name: createAgentDto.name,
+            description: createAgentDto.description,
+            imageUrl: createAgentDto.imageUrl,
+            stockSymbol: createAgentDto.stockSymbol,
             selectedTokens: createAgentDto.selectedTokens,
             strategy: createAgentDto.strategy,
           } as typeof schema.agentsTable.$inferInsert)
