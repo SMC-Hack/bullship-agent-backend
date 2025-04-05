@@ -1,0 +1,1 @@
+ALTER TABLE "balance_snapshots" ADD CONSTRAINT "balance_snapshots_agentId_unique" UNIQUE("agentId");

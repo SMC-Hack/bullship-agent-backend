@@ -76,7 +76,8 @@ export const balanceSnapshotsTable = pgTable('balance_snapshots', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   agentId: integer()
     .notNull()
-    .references(() => agentsTable.id),
+    .references(() => agentsTable.id)
+    .unique(),
   balanceUSD: integer(),
   pnl: integer(),
   createdAt: timestamp().notNull().defaultNow(),

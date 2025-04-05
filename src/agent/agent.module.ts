@@ -13,6 +13,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { QueueProducer } from './queue/queue.producer';
 import { cfg } from 'src/configuration';
 import { AgentSnapshotConsumer } from './queue/snapshot.consumer';
+import { OneInchModule } from 'src/one-inch/one-inch.module';
 
 @Module({
   providers: [
@@ -25,6 +26,7 @@ import { AgentSnapshotConsumer } from './queue/snapshot.consumer';
     forwardRef(() => WalletModule),
     EnsModule,
     ContractModule,
+    OneInchModule,
     BullModule.registerQueue({
       name: AGENT_SNAPSHOT_QUEUE,
     }),
