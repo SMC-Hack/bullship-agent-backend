@@ -4,7 +4,7 @@ export interface BullShipAgentRegistrarContract {
   abi: ContractInterface;
 }
 
-export const BullShipAgentRegistrar = {
+export const BullShipAgentL2Registrar = {
   abi: [
     {
       inputs: [
