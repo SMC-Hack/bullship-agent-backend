@@ -6,8 +6,8 @@ import {
   AGENT_EXECUTE_QUEUE,
   AGENT_SETTLEMENT_QUEUE,
   AGENT_SNAPSHOT_INTERVAL,
-  //   AGENT_EXECUTE_INTERVAL,
-  //   AGENT_SETTLEMENT_INTERVAL,
+  AGENT_EXECUTE_INTERVAL,
+  AGENT_SETTLEMENT_INTERVAL,
 } from 'src/constants/queue.constant';
 
 @Injectable()
@@ -38,6 +38,56 @@ export class QueueProducer implements OnModuleInit {
           },
         },
       );
+    }
+  }
+
+  async addAgentExecuteJob(
+    agentId: string,
+    intervalSeconds: number = AGENT_EXECUTE_INTERVAL,
+  ) {
+    await this.agentExecuteQueue.add(
+      agentId,
+      {
+        agentId,
+      },
+      {
+        repeat: {
+          every: intervalSeconds * 1000,
+        },
+      },
+    );
+  }
+
+  async addAgentSettlementJob(
+    agentId: string,
+    intervalSeconds: number = AGENT_SETTLEMENT_INTERVAL,
+  ) {
+    await this.agentSettlementQueue.add(
+      agentId,
+      {
+        agentId,
+      },
+      {
+        repeat: {
+          every: intervalSeconds * 1000,
+        },
+      },
+    );
+  }
+
+  async removeAgentExecuteJob(agentId: string) {
+    const jobs = await this.agentExecuteQueue.getJobSchedulers();
+    const job = jobs.find((job) => job.name === agentId);
+    if (job) {
+      await this.agentExecuteQueue.removeJobScheduler(job.key);
+    }
+  }
+
+  async removeAgentSettlementJob(agentId: string) {
+    const jobs = await this.agentSettlementQueue.getJobSchedulers();
+    const job = jobs.find((job) => job.name === agentId);
+    if (job) {
+      await this.agentSettlementQueue.removeJobScheduler(job.key);
     }
   }
 }
