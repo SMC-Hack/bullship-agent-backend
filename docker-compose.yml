@@ -23,5 +23,5 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - ENABLE_QUEUE=${ENABLE_QUEUE}
     volumes:
-      - ./upload:/usr/app/upload
+      - ./upload:/usr/app/upload:rw
     network_mode: host
