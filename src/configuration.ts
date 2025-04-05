@@ -14,4 +14,7 @@ export const cfg = {
   adminWalletPrivateKey: process.env.ADMIN_WALLET_PRIVATE_KEY || '',
   baseSepoliaRpcUrl: process.env.BASE_SEPOLIA_RPC_URL || '',
   sepoliaRpcUrl: process.env.SEPOLIA_RPC_URL || '',
+  redisHost: process.env.REDIS_HOST || '',
+  redisPort: process.env.REDIS_PORT || '',
+  redisPassword: process.env.REDIS_PASSWORD || '',
 };

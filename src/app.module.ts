@@ -10,6 +10,8 @@ import { OneInchModule } from './one-inch/one-inch.module';
 import { FileModule } from './file/file.module';
 import { EnsModule } from './ens/ens.module';
 import { ContractModule } from './contract/contract.module';
+import { BullModule } from '@nestjs/bullmq';
+import { cfg } from './configuration';
 
 @Module({
   imports: [
@@ -22,6 +24,13 @@ import { ContractModule } from './contract/contract.module';
     FileModule,
     EnsModule,
     ContractModule,
+    BullModule.forRoot({
+      connection: {
+        host: cfg.redisHost,
+        port: parseInt(cfg.redisPort),
+        password: cfg.redisPassword,
+      },
+    }),
   ],
   providers: [
     {
