@@ -99,9 +99,9 @@ export class AgentService {
       throw new BadRequestException('Agent wallet not found');
     }
 
-    if (agent.stockSymbol || agent.stockAddress) {
+    if (agent.stockAddress) {
       throw new BadRequestException(
-        'Agent already has a stock symbol or address',
+        'Agent already has a stock address',
       );
     }
 
@@ -111,7 +111,6 @@ export class AgentService {
       const agent = await tx
         .update(schema.agentsTable)
         .set({
-          stockSymbol: createAgentDto.stockSymbol,
           stockAddress: createAgentDto.stockAddress,
         })
         .where(eq(schema.agentsTable.id, +agentId))
