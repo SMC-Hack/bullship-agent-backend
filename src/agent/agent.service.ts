@@ -20,7 +20,9 @@ export class AgentService {
     private readonly ensService: EnsService,
     private readonly contractService: ContractService,
     private readonly oneInchService: OneInchService,
-  ) {}
+  ) {
+    this.getAgent('43');
+  }
 
   async getAgents(commonQuery: CommonQuery) {
     const { page = 1, limit = 10, search, sortBy, sortDirection } = commonQuery;
@@ -107,7 +109,28 @@ export class AgentService {
         '8453',
         '1year',
       );
-      return { ...agent, week, month, year };
+
+      const tokenDetailBase =
+        await this.oneInchService.getPortfolioErc20Details(
+          [agent.walletKey?.address],
+          '8453',
+          '1week',
+        );
+      const tokenDetailPolygon =
+        await this.oneInchService.getPortfolioErc20Details(
+          [agent.walletKey?.address],
+          '137',
+          '1week',
+        );
+
+      return {
+        ...agent,
+        week,
+        month,
+        year,
+        tokenDetailBase,
+        tokenDetailPolygon,
+      };
     } else {
       return agent;
     }
