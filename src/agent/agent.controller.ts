@@ -1,8 +1,8 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ValidateUser } from 'src/common/decorators/validate-user.decorator';
-import { CreateAgentP1Dto } from './dto/create-agent-p1.dto';
+import { CreateAgentDto } from './dto/create-agent.dto';
 import { AgentService } from './agent.service';
-import { CreateAgentP2Dto } from './dto/create-agent-p2.dto';
+import { CreateAgentTokenDto } from './dto/create-agent-token.dto';
 import { AgentGuard } from 'src/common/guards/agent.guard';
 import { ValidateAgentOwner } from 'src/common/decorators/validate-agent-owner.decorator';
 
@@ -10,20 +10,20 @@ import { ValidateAgentOwner } from 'src/common/decorators/validate-agent-owner.d
 export class AgentController {
   constructor(private readonly agentService: AgentService) {}
 
-  @Post('phase1')
-  createPhase1(
+  @Post()
+  createAgent(
     @ValidateUser() userId: string,
-    @Body() createAgentDto: CreateAgentP1Dto,
+    @Body() createAgentDto: CreateAgentDto,
   ) {
-    return this.agentService.createPhase1(userId, createAgentDto);
+    return this.agentService.createAgent(userId, createAgentDto);
   }
 
   @UseGuards(AgentGuard)
-  @Post('phase2/:agentId')
-  createPhase2(
-    @Body() createAgentDto: CreateAgentP2Dto,
+  @Post(':agentId/token')
+  createToken(
+    @Body() createAgentDto: CreateAgentTokenDto,
     @ValidateAgentOwner() agentId: string,
   ) {
-    return this.agentService.createPhase2(createAgentDto, agentId);
+    return this.agentService.createAgentToken(createAgentDto, agentId);
   }
 }

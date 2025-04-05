@@ -2,10 +2,10 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DrizzleAsyncProvider } from 'src/db/drizzle.provider';
 import * as schema from 'src/db/schema';
-import { CreateAgentP1Dto } from './dto/create-agent-p1.dto';
 import { WalletService } from './wallet/wallet.service';
 import { eq } from 'drizzle-orm';
-import { CreateAgentP2Dto } from './dto/create-agent-p2.dto';
+import {  CreateAgentTokenDto } from './dto/create-agent-token.dto';
+import { CreateAgentDto } from './dto/create-agent.dto';
 
 @Injectable()
 export class AgentService {
@@ -15,7 +15,7 @@ export class AgentService {
     private readonly walletService: WalletService,
   ) {}
 
-  async createPhase1(userId: string, createAgentDto: CreateAgentP1Dto) {
+  async createAgent(userId: string, createAgentDto: CreateAgentDto) {
     const agent = await this.db.query.agentsTable.findFirst({
       where: eq(schema.agentsTable.name, createAgentDto.name),
     });
@@ -50,7 +50,7 @@ export class AgentService {
     }
   }
 
-  async createPhase2(createAgentDto: CreateAgentP2Dto, agentId: string) {
+  async createAgentToken(createAgentDto: CreateAgentTokenDto, agentId: string) {
     const agent = await this.db.query.agentsTable.findFirst({
       where: eq(schema.agentsTable.id, +agentId),
       with: {

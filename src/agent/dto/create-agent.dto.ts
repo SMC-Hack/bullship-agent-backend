@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateAgentP1Dto {
+export class CreateAgentDto {
   @IsNotEmpty()
   @IsString()
   name: string;

@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateAgentP2Dto {
+export class CreateAgentTokenDto {
   @IsNotEmpty()
   @IsString()
   stockSymbol: string;
