@@ -38,12 +38,36 @@ export class AgentService {
       limit,
       where: search ? like(schema.agentsTable.name, `%${search}%`) : undefined,
       orderBy: [orderDirFn(orderByField)],
+      with: {
+        user: {
+          columns: {
+            walletAddress: true,
+          },
+        },
+        walletKey: {
+          columns: {
+            address: true,
+          },
+        },
+      },
     });
   }
 
   async getAgent(agentId: string) {
     return this.db.query.agentsTable.findFirst({
       where: eq(schema.agentsTable.id, +agentId),
+      with: {
+        user: {
+          columns: {
+            walletAddress: true,
+          },
+        },
+        walletKey: {
+          columns: {
+            address: true,
+          },
+        },
+      },
     });
   }
 
