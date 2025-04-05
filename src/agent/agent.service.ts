@@ -3,9 +3,10 @@ import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DrizzleAsyncProvider } from 'src/db/drizzle.provider';
 import * as schema from 'src/db/schema';
 import { WalletService } from './wallet/wallet.service';
-import { eq } from 'drizzle-orm';
+import { asc, desc, eq, like } from 'drizzle-orm';
 import { CreateAgentTokenDto } from './dto/create-agent-token.dto';
 import { CreateAgentDto } from './dto/create-agent.dto';
+import { CommonQuery } from 'src/common/query/pagination-query';
 
 @Injectable()
 export class AgentService {
@@ -14,6 +15,35 @@ export class AgentService {
     private readonly db: NodePgDatabase<typeof schema>,
     private readonly walletService: WalletService,
   ) {}
+
+  async getAgents(commonQuery: CommonQuery) {
+    const { page = 1, limit = 10, search, sortBy, sortDirection } = commonQuery;
+
+    const orderDirFn = sortDirection === 'asc' ? asc : desc;
+    let orderByField: (typeof schema.agentsTable)[keyof typeof schema.agentsTable] =
+      schema.agentsTable.createdAt;
+
+    switch (sortBy) {
+      case 'name':
+        orderByField = schema.agentsTable.name;
+        break;
+      case 'createdAt':
+        orderByField = schema.agentsTable.createdAt;
+        break;
+    }
+    return this.db.query.agentsTable.findMany({
+      offset: (page - 1) * limit,
+      limit,
+      where: search ? like(schema.agentsTable.name, `%${search}%`) : undefined,
+      orderBy: [orderDirFn(orderByField)],
+    });
+  }
+
+  async getAgent(agentId: string) {
+    return this.db.query.agentsTable.findFirst({
+      where: eq(schema.agentsTable.id, +agentId),
+    });
+  }
 
   async createAgent(userId: string, createAgentDto: CreateAgentDto) {
     const agent = await this.db.query.agentsTable.findFirst({
