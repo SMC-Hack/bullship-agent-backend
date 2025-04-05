@@ -20,9 +20,7 @@ export class AgentService {
     private readonly ensService: EnsService,
     private readonly contractService: ContractService,
     private readonly oneInchService: OneInchService,
-  ) {
-    this.getAgent('43');
-  }
+  ) {}
 
   async getAgents(commonQuery: CommonQuery) {
     const { page = 1, limit = 10, search, sortBy, sortDirection } = commonQuery;
