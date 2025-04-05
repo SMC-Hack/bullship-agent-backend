@@ -6,9 +6,10 @@ import { AccessTokenAuthGuard } from './auth/at-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { TokenModule } from './token/token.module';
 import { ChainModule } from './chain/chain.module';
+import { OneInchModule } from './one-inch/one-inch.module';
 
 @Module({
-  imports: [DbModule, AuthModule, AgentModule, TokenModule, ChainModule],
+  imports: [DbModule, AuthModule, AgentModule, TokenModule, ChainModule, OneInchModule],
   providers: [
     {
       provide: APP_GUARD,

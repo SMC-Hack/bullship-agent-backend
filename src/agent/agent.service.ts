@@ -4,7 +4,7 @@ import { DrizzleAsyncProvider } from 'src/db/drizzle.provider';
 import * as schema from 'src/db/schema';
 import { WalletService } from './wallet/wallet.service';
 import { asc, desc, eq, like } from 'drizzle-orm';
-import {  CreateAgentTokenDto } from './dto/create-agent-token.dto';
+import { CreateAgentTokenDto } from './dto/create-agent-token.dto';
 import { CreateAgentDto } from './dto/create-agent.dto';
 import { CommonQuery } from 'src/common/query/pagination-query';
 
@@ -20,7 +20,8 @@ export class AgentService {
     const { page = 1, limit = 10, search, sortBy, sortDirection } = commonQuery;
 
     const orderDirFn = sortDirection === 'asc' ? asc : desc;
-    let orderByField: typeof schema.agentsTable[keyof typeof schema.agentsTable] = schema.agentsTable.createdAt;
+    let orderByField: (typeof schema.agentsTable)[keyof typeof schema.agentsTable] =
+      schema.agentsTable.createdAt;
 
     switch (sortBy) {
       case 'name':
@@ -34,7 +35,7 @@ export class AgentService {
       offset: (page - 1) * limit,
       limit,
       where: search ? like(schema.agentsTable.name, `%${search}%`) : undefined,
-      orderBy: [orderDirFn(orderByField)]
+      orderBy: [orderDirFn(orderByField)],
     });
   }
 

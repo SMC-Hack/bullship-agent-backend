@@ -11,4 +11,5 @@ export const cfg = {
 
   chainIconTemplateUrl: process.env.CHAIN_ICON_TEMPLATE_URL || '',
   availableChainIds: (process.env.AVAILABLE_CHAIN_IDS || '').split(','),
+  oneInchApiKey: process.env.ONE_INCH_API_KEY || '',
 };
