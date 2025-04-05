@@ -42,7 +42,7 @@ export class WalletService {
     const encryptedPrivateKey = this.encrypt(wallet.privateKey);
 
     return {
-      address: wallet.address,
+      address: wallet.address.toLowerCase(),
       encryptedWalletData: encryptedPrivateKey,
     };
   }

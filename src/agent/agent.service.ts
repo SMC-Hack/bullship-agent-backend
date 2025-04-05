@@ -8,6 +8,7 @@ import { CreateAgentTokenDto } from './dto/create-agent-token.dto';
 import { CreateAgentDto } from './dto/create-agent.dto';
 import { CommonQuery } from 'src/common/query/pagination-query';
 import { EnsService } from 'src/ens/ens.service';
+import { ContractService } from 'src/contract/contract.service';
 
 @Injectable()
 export class AgentService {
@@ -16,6 +17,7 @@ export class AgentService {
     private readonly db: NodePgDatabase<typeof schema>,
     private readonly walletService: WalletService,
     private readonly ensService: EnsService,
+    private readonly contractService: ContractService,
   ) {}
 
   async getAgents(commonQuery: CommonQuery) {
@@ -38,13 +40,42 @@ export class AgentService {
       limit,
       where: search ? like(schema.agentsTable.name, `%${search}%`) : undefined,
       orderBy: [orderDirFn(orderByField)],
+      with: {
+        user: {
+          columns: {
+            walletAddress: true,
+          },
+        },
+        walletKey: {
+          columns: {
+            address: true,
+          },
+        },
+      },
     });
   }
 
   async getAgent(agentId: string) {
     return this.db.query.agentsTable.findFirst({
       where: eq(schema.agentsTable.id, +agentId),
+      with: {
+        user: {
+          columns: {
+            walletAddress: true,
+          },
+        },
+        walletKey: {
+          columns: {
+            address: true,
+          },
+        },
+      },
     });
+  }
+
+  async updateENSandApproveMerchant(name: string, walletAddress: string) {
+    await this.ensService.setPrimaryName(name, walletAddress);
+    void this.contractService.agentApproveMaxToAgentMerchant(walletAddress);
   }
 
   async createAgent(userId: string, createAgentDto: CreateAgentDto) {
@@ -72,18 +103,20 @@ export class AgentService {
 
         const newWallet = this.walletService.createWallet();
 
-        void this.ensService.setPrimaryName(
-          createAgentDto.name,
-          newWallet.address,
-        );
-
         await tx.insert(schema.walletKeysTable).values({
           agentId: agent[0].id,
           address: newWallet.address,
           encryptedWalletData: newWallet.encryptedWalletData,
         });
+
         return { ...agent[0], walletAddress: newWallet.address };
       });
+
+      void this.updateENSandApproveMerchant(
+        createAgentDto.name,
+        transaction.walletAddress,
+      );
+
       return transaction;
     } catch (err) {
       console.log(err);
