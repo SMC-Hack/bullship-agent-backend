@@ -41,6 +41,7 @@ export class AgentService {
       where: search ? like(schema.agentsTable.name, `%${search}%`) : undefined,
       orderBy: [orderDirFn(orderByField)],
       with: {
+        balanceSnapshots: true,
         user: {
           columns: {
             walletAddress: true,
