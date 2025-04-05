@@ -5,5 +5,6 @@ import { WalletModule } from 'src/agent/wallet/wallet..module';
 @Module({
   imports: [WalletModule],
   providers: [EnsService],
+  exports: [EnsService],
 })
 export class EnsModule {}

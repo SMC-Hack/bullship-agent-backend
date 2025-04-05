@@ -7,6 +7,7 @@ import { asc, desc, eq, like } from 'drizzle-orm';
 import { CreateAgentTokenDto } from './dto/create-agent-token.dto';
 import { CreateAgentDto } from './dto/create-agent.dto';
 import { CommonQuery } from 'src/common/query/pagination-query';
+import { EnsService } from 'src/ens/ens.service';
 
 @Injectable()
 export class AgentService {
@@ -14,6 +15,7 @@ export class AgentService {
     @Inject(DrizzleAsyncProvider)
     private readonly db: NodePgDatabase<typeof schema>,
     private readonly walletService: WalletService,
+    private readonly ensService: EnsService,
   ) {}
 
   async getAgents(commonQuery: CommonQuery) {
@@ -70,6 +72,11 @@ export class AgentService {
 
         const newWallet = this.walletService.createWallet();
 
+        void this.ensService.setPrimaryName(
+          createAgentDto.name,
+          newWallet.address,
+        );
+
         await tx.insert(schema.walletKeysTable).values({
           agentId: agent[0].id,
           address: newWallet.address,
@@ -104,8 +111,6 @@ export class AgentService {
         'Agent already has a stock symbol or address',
       );
     }
-
-    //TODO: Set ENS for Agent Wallet
 
     const transaction = await this.db.transaction(async (tx) => {
       const agent = await tx
