@@ -4,9 +4,10 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AccessTokenStrategy } from './at-auth.strategy';
 import { AuthController } from './auth.controller';
+import { LlmModule } from 'src/llm/llm.module';
 
 @Module({
-  imports: [PassportModule, JwtModule.register({})],
+  imports: [PassportModule, JwtModule.register({}), LlmModule],
   providers: [AuthService, AccessTokenStrategy],
   exports: [AuthService],
   controllers: [AuthController],
