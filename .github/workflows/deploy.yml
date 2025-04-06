@@ -10,6 +10,11 @@ jobs:
     steps:
       - uses: actions/checkout@main
 
+      - name: Create upload directory
+        run: |
+          mkdir -p upload
+          chmod 777 upload
+
       - name: Create .env file
         run: |
           cat << EOF > .env

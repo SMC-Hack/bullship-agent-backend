@@ -1,0 +1,31 @@
+import { Processor, WorkerHost } from '@nestjs/bullmq';
+import { Job } from 'bullmq';
+import { AGENT_SETTLEMENT_QUEUE } from 'src/constants/queue.constant';
+import { AgentService } from '../agent.service';
+import { Inject } from '@nestjs/common';
+import { DrizzleAsyncProvider } from 'src/db/drizzle.provider';
+import { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import * as schema from 'src/db/schema';
+
+@Processor(AGENT_SETTLEMENT_QUEUE)
+export class AgentSettlementConsumer extends WorkerHost {
+  constructor(
+    private readonly agentService: AgentService,
+    @Inject(DrizzleAsyncProvider)
+    private readonly db: NodePgDatabase<typeof schema>,
+  ) {
+    super();
+  }
+
+  async process(job: Job<{ agentId: string }>) {
+    const { agentId } = job.data;
+    try {
+      // TODO: call settlement
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log('agentId', agentId, 'AGENT_SETTLEMENT_QUEUE triggered !');
+    } catch (error) {
+      console.log('agentId', agentId, 'AGENT_SETTLEMENT_QUEUE failed !');
+      console.error(error);
+    }
+  }
+}
