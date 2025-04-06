@@ -18,4 +18,6 @@ export const cfg = {
   redisPort: process.env.REDIS_PORT || '',
   redisPassword: process.env.REDIS_PASSWORD || '',
   enableQueue: process.env.ENABLE_QUEUE === 'true' || false,
+  openaiApiKey: process.env.OPENAI_API_KEY || '',
+  aiModel: process.env.AI_MODEL || 'gpt-4o-mini',
 };

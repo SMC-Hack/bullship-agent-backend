@@ -14,6 +14,7 @@ import { QueueProducer } from './queue/queue.producer';
 import { cfg } from 'src/configuration';
 import { AgentSnapshotConsumer } from './queue/snapshot.consumer';
 import { OneInchModule } from 'src/one-inch/one-inch.module';
+import { LlmModule } from 'src/llm/llm.module';
 
 @Module({
   providers: [
@@ -36,6 +37,7 @@ import { OneInchModule } from 'src/one-inch/one-inch.module';
     BullModule.registerQueue({
       name: AGENT_SETTLEMENT_QUEUE,
     }),
+    LlmModule,
   ],
 })
 export class AgentModule {}

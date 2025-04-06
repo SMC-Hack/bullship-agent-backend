@@ -12,6 +12,7 @@ import { EnsModule } from './ens/ens.module';
 import { ContractModule } from './contract/contract.module';
 import { BullModule } from '@nestjs/bullmq';
 import { cfg } from './configuration';
+import { LlmModule } from './llm/llm.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { cfg } from './configuration';
         password: cfg.redisPassword,
       },
     }),
+    LlmModule,
   ],
   providers: [
     {

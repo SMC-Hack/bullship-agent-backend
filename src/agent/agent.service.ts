@@ -10,6 +10,10 @@ import { CommonQuery } from 'src/common/query/pagination-query';
 import { EnsService } from 'src/ens/ens.service';
 import { ContractService } from 'src/contract/contract.service';
 import { OneInchService } from 'src/one-inch/one-inch.service';
+import { LlmService } from 'src/llm/llm.service';
+import { AgentTradePlan, TradePlan } from './interfaces/trade.interface';
+import { TRADE_PLAN_SYSTEM_PROMPT, TRADE_PLAN_USER_MESSAGE } from './constants/prompt-template.const';
+import { InvokeParams } from 'src/llm/interfaces/invoke-params.interface';
 
 @Injectable()
 export class AgentService {
@@ -20,6 +24,7 @@ export class AgentService {
     private readonly ensService: EnsService,
     private readonly contractService: ContractService,
     private readonly oneInchService: OneInchService,
+    private readonly llmService: LlmService,
   ) {}
 
   async getAgents(commonQuery: CommonQuery) {
@@ -195,5 +200,33 @@ export class AgentService {
       return agent[0];
     });
     return transaction;
+  }
+
+  async generateTradePlan(agentId: string) {
+    const agent = await this.db.query.agentsTable.findFirst({
+      where: eq(schema.agentsTable.id, +agentId),
+    });
+
+    if (!agent) {
+      throw new BadRequestException('Agent not found');
+    }
+
+    const params: InvokeParams = {
+      systemMessage: TRADE_PLAN_SYSTEM_PROMPT,
+      userMessage: TRADE_PLAN_USER_MESSAGE,
+      parseOutput: true,
+    };
+
+    const payload: {
+      strategy: string;
+      tokens: string;
+    } = {
+      strategy: agent.strategy,
+      tokens: agent.selectedTokens,
+    };
+
+    const tradePlan = await this.llmService.invoke<{ strategy: string; tokens: string }, AgentTradePlan>(params, payload);
+
+    return tradePlan;
   }
 }
