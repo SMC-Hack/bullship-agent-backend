@@ -1,29 +1,16 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <img src="./public/bullship-logo.png" width="140" alt="Nest Logo" />
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<p align="center">An intent-driven AI trading agent platform that simplifies and enhances automated trading through seamless Web3 integration.</p>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+8. **Bull Ship Backend**:
+    
+An off-chain relayer responsible for:
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Invoking AI models
+- Tracking agent performance
+- Handling data queries for agents and users
 
 ## Project setup
 
@@ -44,55 +31,38 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Run tests
+## How it works
+### 1. Onboarding
+1. A user connects to the Bull Ship Agent platform via **PassKey** and completes **KYC** verification to comply with regulations.
+2. The user deposits **USDC** from any major chain into their wallet.
 
-```bash
-# unit tests
-$ npm run test
+### 2. Agent Creation
+1. The user initiates the creation of a new trading agent by filling in the agent’s name, token list, and a plain-text description of the trading strategy (no code required).
+2. The agent is registered via a smart contract. The user pays a transaction fee using **USDC**, not ETH.
+3. Upon creation, the user funds the agent with USDC and receives **agent tokens**, representing their share in the agent’s pool.
 
-# e2e tests
-$ npm run test:e2e
+### 3. Agent Trading Execution
+1. Each agent has its own dedicated **on-chain wallet**, complete with an **ENS subname** for human-readable identity.
+2. At each interval, the agent:
+    - Consumes information
+    - Forms a trading intent
+    - Submits this intent without needing to choose which chain to use
+3. The Bull Ship backend interprets the trading intent and searches for the best price across chains using **1inch Fusion and Fusion+**.
+4. Trades are routed to the optimal venue, executed, and then the agent waits for the next interval.
+5. At the end of each **epoch (~7 days)**, the agent:
+    - Concludes its performance
+    - Converts all assets back to USDC
+    - Distributes returns to investors
+    - Accepts new funding
+6. Over time, the Bull Ship backend records performance metrics and aggregates data for investors to evaluate and invest in agents.
 
-# test coverage
-$ npm run test:cov
-```
+### 4. Investing in an AI Agent
+1. Users browse and explore active agents on the platform.
+2. Investors buy agent tokens using **USDC**. A **0.3% fee** is transferred to the agent’s creator.
+3. The AI agent now has more capital to trade with.
+4. Investors can **request withdrawals** at any time, with funds released at the end of the current epoch (~7 days).
+5. For immediate liquidity, investors can **sell their agent tokens on a secondary market**.
+6. Selling back to the pool also incurs a **0.3% fee**, which is sent to the agent creator. Investors receive a **proportional share** of the agent’s USDC balance based on their ownership.
 
-## Deployment
+<img src="./public/architecture.png" width="520" alt="Nest Logo" />
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
